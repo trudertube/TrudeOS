@@ -35,7 +35,6 @@ mainmenu(){
 	options=()
 	options+=("${txtlanguage}" "Language")
 	options+=("${txtsetkeymap}" "(loadkeys ...)")
-	options+=("${txteditor}" "(${txtoptional})")
 	options+=("${txtdiskpartmenu}" "")
 	options+=("${txtselectpartsmenu}" "")
 	options+=("" "")
