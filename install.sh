@@ -30,7 +30,7 @@ read -p "Press ENTER to continue "
 
 # -------------------------------------------------------
 
-apptitle="Arch Linux Fast Install (archfi) - Version: 2021.01.25.23.15.12 (GPLv3)"
+apptitle="TrudeOS Installer - Version: 0.00 (GPLv3)"
 baseurl=https://raw.githubusercontent.com/MatMoul/archfi/master
 cpl=0
 skipfont="0"
