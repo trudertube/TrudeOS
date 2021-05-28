@@ -26,6 +26,7 @@ fspkgs=""
 
 # --------------------------------------------------------
 mainmenu(){
+	EDITOR=nano
 	if [ "${1}" = "" ]; then
 		nextitem="."
 	else
@@ -50,10 +51,6 @@ mainmenu(){
 			;;
 			"${txtsetkeymap}")
 				setkeymap
-				nextitem="${txtdiskpartmenu}"
-			;;
-			"${txteditor}")
-				chooseeditor
 				nextitem="${txtdiskpartmenu}"
 			;;
 			"${txtdiskpartmenu}")
@@ -140,24 +137,6 @@ setkeymap(){
 		clear
 		echo "loadkeys ${keymap}"
 		loadkeys ${keymap}
-		pressanykey
-	fi
-}
-
-chooseeditor(){
-	options=()
-	options+=("nano" "")
-	options+=("vim" "")
-	options+=("vi" "")
-	options+=("edit" "")
-	sel=$(whiptail --backtitle "${apptitle}" --title "${txteditor}" --menu "" 0 0 0 \
-		"${options[@]}" \
-		3>&1 1>&2 2>&3)
-	if [ "$?" = "0" ]; then
-		clear
-		echo "export EDITOR=${sel}"
-		export EDITOR=${sel}
-		EDITOR=${sel}
 		pressanykey
 	fi
 }
