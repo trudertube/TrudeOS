@@ -15,15 +15,17 @@ echo '# Please keep in mind that this is still an unfinished development version
 echo '# Use this script at your own risk                                         #'
 echo '############################################################################'
 
+read -p "Press ENTER to continue "
+
 # Prepare live environment
 pacman -Sy
 pacman -S git python-pip
-pip uninstall archinstall
-git clone https://github.com/archlinux/archinstall
-cd archinstall
-python setup.py install
-cd ..
-rm -r archinstall
+#pip uninstall archinstall
+#git clone https://github.com/archlinux/archinstall
+#cd archinstall
+#python setup.py install
+#cd ..
+#rm -r archinstall
 
 # Run TrudeOS Installer
 python TrudeOSInstall.py
