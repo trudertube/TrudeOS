@@ -6,6 +6,14 @@
 # Still in development - 28/5/2021          #
 #############################################
 
+echo '############################################################################'
+echo '#                    Welcome to TrudeOS Installer!                         #'
+echo '############################################################################'
+echo '# The Installer will guide you trough the installation porocess            #'
+echo '# Please keep in mind that this is still an unfinished development version #'
+echo '# Use this script at your own risk                                         #'
+echo '############################################################################'
+
 # Prepare live environment
 pacman -Sy
 pacman -S git python-pip
