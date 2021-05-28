@@ -1,3 +1,11 @@
+#! /bin/bash
+
+#############################################
+# TrudeOS installer                         #
+# Should be run inside TrudeOS's repository #
+# Still in development - 28/5/2021          #
+#############################################
+
 # Prepare live environment
 pacman -Sy
 pacman -S git python-pip
@@ -9,4 +17,4 @@ cd ..
 rm -r archinstall
 
 # Run TrudeOS Installer
-
+python TrudeOSInstall.py
