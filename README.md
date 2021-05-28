@@ -1,4 +1,4 @@
 # TrudeOS
 
 ## Install TrudeOS
-`pacman -Sy && pacman -S git && git clone https://github.com/trudertube/TrudeOS.git && cd TrudeOS && bash install.sh`
+`pacman -Sy git && git clone https://github.com/trudertube/TrudeOS.git && cd TrudeOS && bash install.sh`
