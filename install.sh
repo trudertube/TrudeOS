@@ -911,7 +911,6 @@ archmenu(){
 	options+=("${txtedit//%1/mirrorlist}" "(${txtoptional})")
 	options+=("${txtbootloader}" "")
 	options+=("${txtextrasmenu}" "")
-	options+=("archdi" "${txtarchdidesc}")
 	sel=$(whiptail --backtitle "${apptitle}" --title "${txtarchinstallmenu}" --menu "" --cancel-button "${txtback}" --default-item "${nextitem}" 0 0 0 \
 		"${options[@]}" \
 		3>&1 1>&2 2>&3)
@@ -1003,10 +1002,6 @@ archmenu(){
 			;;
 			"${txtextrasmenu}")
 				archextrasmenu
-				nextitem="archdi"
-			;;
-			"archdi")
-				installarchdi
 				nextitem="archdi"
 			;;
 		esac
