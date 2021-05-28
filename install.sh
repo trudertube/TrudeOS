@@ -11,6 +11,24 @@
 #
 # referance : https://wiki.archlinux.org/index.php/Installation_guide
 
+#############################################
+# TrudeOS installer                         #
+# Should be run inside TrudeOS's repository #
+# Still in development - 28/5/2021          #
+#############################################
+
+clear
+echo '############################################################################'
+echo '#                    Welcome to TrudeOS Installer!                         #'
+echo '############################################################################'
+echo '# The Installer will guide you trough the installation porocess            #'
+echo '# Please keep in mind that this is still an unfinished development version #'
+echo '# Use this script at your own risk                                         #'
+echo '############################################################################'
+
+read -p "Press ENTER to continue "
+
+# -------------------------------------------------------
 
 apptitle="Arch Linux Fast Install (archfi) - Version: 2021.01.25.23.15.12 (GPLv3)"
 baseurl=https://raw.githubusercontent.com/MatMoul/archfi/master
