@@ -1,3 +1,9 @@
+###########################################
+# TrudeEH's Arch Installer                #
+#	based on ArchInstall              #
+#	Still in development - 28/05/2021 #
+###########################################
+
 import json
 import logging
 import os
@@ -10,10 +16,10 @@ from archinstall.lib.networking import check_mirror_reachable
 from archinstall.lib.profiles import Profile
 
 if archinstall.arguments.get('help'):
-	print("See `man archinstall` for help.")
+	print("HELP MESSAGE")                                                                                 #INC
 	exit(0)
 if os.getuid() != 0:
-	print("Archinstall requires root privileges to run. See --help for more.")
+	print("TrudeOS installer requires root privileges to run. See --help for more.")
 	exit(1)
 
 # For support reasons, we'll log the disk layout pre installation to match against post-installation layout
