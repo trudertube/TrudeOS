@@ -1731,17 +1731,17 @@ loadstrings(){
 
 	txtinstallmenu="Install Menu"
 
-	txtarchinstallmenu="Arch Install Menu"
+	txtarchinstallmenu="TrudeOS Install Menu"
 
 	txtselectmirrorsbycountry="Select mirrors by country"
 	txtselectcountry="Select country"
 	txteditmirrorlist="Edit mirrorlist"
-	txtinstallarchlinux="Install Arch Linux"
+	txtinstallarchlinux="Install TrudeOS"
 	txtinstallarchlinuxkernel="Kernel"
 	txtinstallarchlinuxfirmwares="Firmwares"
 	txtinstallarchlinuxfilesystems="File Systems"
 	txtinstallarchlinuxcustompackagelist="Custom Package List"
-	txtconfigarchlinux="Config Arch Linux"
+	txtconfigarchlinux="Config TrudeOS"
 
 	txtsethostname="Set Computer Name"
 	txtsetfont="Set Font"
@@ -1782,12 +1782,6 @@ loadstrings(){
 	txtenable="Enable %1"
 
 	txtpressanykey="Press any key to continue."
-
-	txtarchdidesc="Full desktop install script"
-	txtinstallarchdi="Arch Linux Desktop Install (archdi) is a second script who can help you to install a full workstation.\n\nYou can just launch the script or install it. Choose in the next menu.\n\nArch Linux Desktop Install as two dependencies : wget and libnewt.\n\npacstrap wget and libnewt?"
-	txtarchdiinstallandlaunch="Install and run archdi"
-	txtarchdiinstall="Install archdi"
-	txtarchdilaunch="Launch archdi"
 }
 
 # --------------------------------------------------------
