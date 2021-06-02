@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Arch Linux Fast Install (archfi)
-# --------------------------------
-# author    : MatMoul
-#             https://github.com/MatMoul
-#             http://sourceforge.net/u/matmoul
-# project   : https://github.com/MatMoul/archfi
-#             http://sourceforge.net/projects/archfi/
 # license   : LGPL-3.0 (http://opensource.org/licenses/lgpl-3.0.html)
 #
 # referance : https://wiki.archlinux.org/index.php/Installation_guide
@@ -27,13 +20,19 @@ fspkgs=""
 # --------------------------------------------------------
 mainmenu(){
 	EDITOR=nano
+	loadstrings
+	if [ "$(cat /etc/locale.gen | grep ""#${locale}"")" != "" ]; then
+	sed -i "/#${locale}/s/^#//g" /etc/locale.gen
+	locale-gen
+	fi
+	export LANG=${locale}
+	
 	if [ "${1}" = "" ]; then
 		nextitem="."
 	else
 		nextitem=${1}
 	fi
 	options=()
-	options+=("${txtlanguage}" "Language")
 	options+=("${txtsetkeymap}" "(loadkeys ...)")
 	options+=("${txtdiskpartmenu}" "")
 	options+=("${txtselectpartsmenu}" "")
@@ -44,10 +43,6 @@ mainmenu(){
 		3>&1 1>&2 2>&3)
 	if [ "$?" = "0" ]; then
 		case ${sel} in
-			"${txtlanguage}")
-				chooselanguage
-				nextitem="${txtsetkeymap}"
-			;;
 			"${txtsetkeymap}")
 				setkeymap
 				nextitem="${txtdiskpartmenu}"
@@ -76,45 +71,6 @@ mainmenu(){
 		mainmenu "${nextitem}"
 	else
 		clear
-	fi
-}
-
-chooselanguage(){
-	options=()
-	options+=("Arabic" "(By Mohammad Alawadi)")
-	options+=("Brazilian" "(By MaxWilliamJF)")
-	options+=("Dutch" "(By bowero)")
-	options+=("English" "(By MatMoul)")
-	options+=("French" "(By MatMoul)")
-	options+=("German" "(By untergrundbiber)")
-	options+=("Greek" "(By quelotic)")
-	options+=("Italian" "(By thegoldgoat)")
-	options+=("Hungarian" "(By KardiWeb)")
-	options+=("Norwegian" "(By mrboen94)")
-	options+=("Polish" "(By dawidd6)")
-	options+=("Portuguese" "(By hugok)")
-	options+=("Russian" "(By Anonymous_Prodject)")
-	options+=("Spanish" "(By Mystogab)")
-	options+=("Turkish" "(By c0b41)")
-	sel=$(whiptail --backtitle "${apptitle}" --title "${txtlanguage}" --menu "" 0 0 0 \
-		"${options[@]}" \
-		3>&1 1>&2 2>&3)
-	if [ "$?" = "0" ]; then
-		clear
-		if [ "${sel}" = "English" ]; then
-			loadstrings
-		else
-			eval $(curl -L ${baseurl}/lng/${sel} | sed '/^#/ d')
-		fi
-		if [ "${skipfont}" = "0" ]; then
-			eval $(setfont ${font})
-		fi
-		font=
-		if [ "$(cat /etc/locale.gen | grep ""#${locale}"")" != "" ]; then
-			sed -i "/#${locale}/s/^#//g" /etc/locale.gen
-			locale-gen
-		fi
-		export LANG=${locale}
 	fi
 }
 
