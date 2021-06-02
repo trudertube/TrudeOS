@@ -744,14 +744,7 @@ installbase(){
 		return 1
 	fi
 	
-	options=()
-	options+=("linux-firmware" "(${txtoptional})" on)
-	sel=$(whiptail --backtitle "${apptitle}" --title "${txtinstallarchlinuxfirmwares}" --checklist "" 0 0 0 \
-		"${options[@]}" \
-		3>&1 1>&2 2>&3)
-	if [ ! "$?" = "0" ]; then
-		return 1
-	fi
+	sel="linux-firmware"
 	for itm in $sel; do
 		pkgs="$pkgs $(echo $itm | sed 's/"//g')"
 	done
