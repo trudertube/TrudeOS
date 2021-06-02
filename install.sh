@@ -10,7 +10,7 @@
 # Still in development - 28/5/2021          #
 #############################################
 
-apptitle="TrudeOS Installer - Version: 0.00 (GPLv3)"
+apptitle="TrudeOS Installer - Version: 0.01 (GPLv3)"
 baseurl=https://raw.githubusercontent.com/MatMoul/archfi/master
 cpl=0
 skipfont="0"
@@ -196,7 +196,6 @@ diskpartautodos(){
 			echo -e "n\np\n\n\n\nw" | fdisk ${device}
 			sleep 1
 			echo ""
-			pressanykey
 			if [ "${device::8}" == "/dev/nvm" ]; then
 				bootdev=${device}"p1"
 				swapdev=${device}"p2"
@@ -229,7 +228,6 @@ diskpartautogpt(){
 			echo "${txtautopartcreate//%1/root}"
 			sgdisk ${device} -n=4:0:0
 			echo ""
-			pressanykey
 			if [ "${device::8}" == "/dev/nvm" ]; then
 				bootdev=${device}"p2"
 				swapdev=${device}"p3"
@@ -260,7 +258,6 @@ diskpartautoefi(){
 			echo "${txtautopartcreate//%1/root}"
 			sgdisk ${device} -n=3:0:0
 			echo ""
-			pressanykey
 			if [ "${device::8}" == "/dev/nvm" ]; then
 				bootdev=${device}"p1"
 				swapdev=${device}"p2"
@@ -291,7 +288,6 @@ diskpartautoefiusb(){
 			echo "${txthybridpartcreate}"
 			echo -e "r\nh\n3\nN\n\nY\nN\nw\nY\n" | gdisk ${device}
 			echo ""
-			pressanykey
 			if [ "${device::8}" == "/dev/nvm" ]; then
 				bootdev=${device}"p1"
 				swapdev=
@@ -309,7 +305,6 @@ diskpartautoefiusb(){
 diskpartcfdisk(){
 		device=$( selectdisk "${txteditparts} (cfdisk)" )
 	if [ "$?" = "0" ]; then
-		clear
 		cfdisk ${device}
 	fi
 }
@@ -317,7 +312,6 @@ diskpartcfdisk(){
 diskpartcgdisk(){
 		device=$( selectdisk "${txteditparts} (cgdisk)" )
 	if [ "$?" = "0" ]; then
-		clear
 		cgdisk ${device}
 	fi
 }
@@ -458,7 +452,6 @@ formatbootdevice(){
 	if [ ! "$?" = "0" ]; then
 		return 1
 	fi
-	clear
 	echo "${txtformatingpart//%1/${2}} ${sel}"
 	echo "----------------------------------------------"
 	case ${sel} in
@@ -481,7 +474,6 @@ formatbootdevice(){
 		;;
 	esac
 	echo ""
-	pressanykey
 }
 formatswapdevice(){
 	options=()
@@ -492,7 +484,6 @@ formatswapdevice(){
 	if [ ! "$?" = "0" ]; then
 		return 1
 	fi
-	clear
 	echo "${txtformatingpart//%1/${swapdev}} swap"
 	echo "----------------------------------------------------"
 	case ${sel} in
@@ -500,7 +491,6 @@ formatswapdevice(){
 			echo "mkswap ${swapdev}"
 			mkswap ${swapdev}
 			echo ""
-			pressanykey
 		;;
 	esac
 	clear
@@ -524,7 +514,6 @@ formatdevice(){
 	if [ ! "$?" = "0" ]; then
 		return 1
 	fi
-	clear
 	echo "${txtformatingpart//%1/${2}} ${sel}"
 	echo "----------------------------------------------"
 	case ${sel} in
@@ -580,19 +569,15 @@ formatdevice(){
 			echo "cryptsetup luksFormat ${2}"
 			cryptsetup luksFormat ${2}
 			if [ ! "$?" = "0" ]; then
-				pressanykey
 				return 1
 			fi
-			pressanykey
 			echo ""
 			echo "${txtopenluksdevice}"
 			echo "cryptsetup luksOpen ${2} ${1}"
 			cryptsetup luksOpen ${2} ${1}
 			if [ ! "$?" = "0" ]; then
-				pressanykey
 				return 1
 			fi
-			pressanykey
 			options=()
 			options+=("normal" "")
 			options+=("fast" "")
@@ -610,7 +595,6 @@ formatdevice(){
 						dd if=/dev/zero of=/dev/mapper/${1} bs=60M & PID=$! &>/dev/null
 					;;
 				esac
-				clear
 				sleep 1
 				while kill -USR1 ${PID} &>/dev/null
 				do
@@ -618,7 +602,6 @@ formatdevice(){
 				done
 			fi
 			echo ""
-			pressanykey
 			formatdevice ${1} /dev/mapper/${1} noluks
 			if [ "${1}" = "root" ]; then
 				realrootdev=${rootdev}
@@ -637,11 +620,9 @@ formatdevice(){
 		;;
 	esac
 	echo ""
-	pressanykey
 }
 
 mountparts(){
-	clear
 	echo "mount ${rootdev} /mnt"
 	mount ${rootdev} /mnt
 	echo "mkdir /mnt/{boot,home}"
@@ -658,7 +639,6 @@ mountparts(){
 		echo "mount ${homedev} /mnt/home"
 		mount ${homedev} /mnt/home
 	fi
-	pressanykey
 	installmenu
 }
 # --------------------------------------------------------
@@ -806,22 +786,18 @@ installbase(){
 			pkgs="$pkgs $(echo $itm | sed 's/"//g')"
 		done
 	fi
-	
 	clear
 	echo "pacstrap /mnt ${pkgs}"
 	pacstrap /mnt ${pkgs}
-	pressanykey
 }
 
 unmountdevices(){
-	clear
 	echo "umount -R /mnt"
 	umount -R /mnt
 	if [ ! "${swapdev}" = "" ]; then
 		echo "swapoff ${swapdev}"
 		swapoff ${swapdev}
 	fi
-	pressanykey
 }
 # --------------------------------------------------------
 
@@ -1027,7 +1003,6 @@ archsetlocale(){
 		"${options[@]}" \
 		3>&1 1>&2 2>&3)
 	if [ "$?" = "0" ]; then
-		clear
 		echo "echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
 		echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
 		echo "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
@@ -1231,7 +1206,6 @@ archbootloadergrubmenu(){
 				if (whiptail --backtitle "${apptitle}" --title "${txtedit//%1/grub}" --yesno "${txtrungrubmakeconfig}" 0 0) then
 					clear
 					archchroot grubinstall
-					pressanykey
 				fi
 				nextblitem="${txtinstall//%1/bootloader}"
 			;;
@@ -1275,7 +1249,6 @@ archgrubinstall(){
 
 	clear
 	archchroot grubinstall
-	pressanykey
 }
 archgrubinstallchroot(){
 	echo "mkdir /boot/grub"
@@ -1415,7 +1388,6 @@ archsyslinuxinstall(){
 
 	echo "pacstrap /mnt syslinux ${additionalpkg}"
 	pacstrap /mnt syslinux ${additionalpkg}
-	pressanykey
 
 	clear
 	echo "Updating /boot/syslinux/syslinux.cfg"
@@ -1427,7 +1399,6 @@ archsyslinuxinstall(){
 		sed -i "/APPEND\ root=/c\    APPEND root=${rootdev}\ rw" /mnt/boot/syslinux/syslinux.cfg
 	fi
 
-	pressanykey
 }
 archsyslinuxinstallbootloader(){
 	clear
@@ -1436,7 +1407,6 @@ archsyslinuxinstallbootloader(){
 	else
 		archchroot syslinuxbootloaderinstall ${bootdev}
 	fi
-	pressanykey
 }
 archsyslinuxinstallbootloaderchroot(){
 	if [ ! "${1}" = "none" ]; then
@@ -1537,8 +1507,6 @@ archsystemdinstall(){
 	cp /mnt/boot/loader/entries/arch.conf /mnt/boot/loader/entries/arch-fallback.conf
 	sed -i "s/Arch Linux/Arch Linux Fallback/" /mnt/boot/loader/entries/arch-fallback.conf
 	sed -i "s/initramfs-linux/initramfs-linux-fallback/" /mnt/boot/loader/entries/arch-fallback.conf
-
-	pressanykey
 }
 archsystemdinstallchroot(){
 	echo "bootctl --path=/boot install"
@@ -1593,7 +1561,6 @@ archrefindinstall(){
 	echo "\"Arch Linux         \" \"root=UUID=${rootuuid} rw add_efi_memmap\"" > /mnt/boot/refind_linux.conf
 	echo "\"Arch Linux Fallback\" \"root=UUID=${rootuuid} rw add_efi_memmap initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
 	echo "\"Arch Linux Terminal\" \"root=UUID=${rootuuid} rw add_efi_memmap systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
-	pressanykey
 }
 archrefindinstallchroot(){
 	#--usedefault /dev/sdXY --alldrivers
@@ -1628,7 +1595,6 @@ archextrasmenu(){
 	if [[ "${pkgs}" == *"dhcpcd"* ]]; then
 		archchroot enabledhcpcd
 	fi
-	pressanykey
 }
 archenabledhcpcdchroot(){
 	echo "systemctl enable dhcpcd"
@@ -1637,9 +1603,6 @@ archenabledhcpcdchroot(){
 }
 
 # --------------------------------------------------------
-pressanykey(){
-	read -n1 -p "${txtpressanykey}"
-}
 
 loadstrings(){
 
