@@ -89,7 +89,6 @@ setkeymap(){
 		"${options[@]}" \
 		3>&1 1>&2 2>&3)
 	if [ "$?" = "0" ]; then
-		echo "loadkeys ${keymap}"
 		loadkeys ${keymap}
 	fi
 }
@@ -969,10 +968,8 @@ archchroot(){
 archsethostname(){
 	hostname=$(whiptail --backtitle "${apptitle}" --title "${txtsethostname}" --inputbox "" 0 0 "archlinux" 3>&1 1>&2 2>&3)
 	if [ "$?" = "0" ]; then
-		clear
 		echo "echo \"${hostname}\" > /mnt/etc/hostname"
 		echo "${hostname}" > /mnt/etc/hostname
-		pressanykey
 	fi
 }
 
@@ -995,10 +992,8 @@ archsetkeymap(){
 		"${options[@]}" \
 		3>&1 1>&2 2>&3)
 	if [ "$?" = "0" ]; then
-		clear
 		echo "echo \"KEYMAP=${keymap}\" > /mnt/etc/vconsole.conf"
 		echo "KEYMAP=${keymap}" > /mnt/etc/vconsole.conf
-		pressanykey
 	fi
 }
 
@@ -1013,10 +1008,8 @@ archsetfont(){
 		"${options[@]}" \
 		3>&1 1>&2 2>&3)
 	if [ "$?" = "0" ]; then
-		clear
 		echo "echo \"FONT=${vcfont}\" >> /mnt/etc/vconsole.conf"
 		echo "FONT=${vcfont}" >> /mnt/etc/vconsole.conf
-		pressanykey
 	fi
 }
 
@@ -1042,7 +1035,6 @@ archsetlocale(){
 		echo "sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
 		sed -i '/#'${locale}'.UTF-8/s/^#//g' /mnt/etc/locale.gen
 		archchroot setlocale
-		pressanykey
 	fi
 }
 archsetlocalechroot(){
@@ -1079,10 +1071,8 @@ archsettime(){
 		return 1
 	fi
 
-	clear
 	echo "ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime"
 	ln -sf /usr/share/zoneinfo/${timezone} /mnt/etc/localtime
-	pressanykey
 
 	options=()
 	options+=("UTC" "")
@@ -1094,7 +1084,6 @@ archsettime(){
 		return 1
 	fi
 	
-	clear
 	case ${sel} in
 		"${txthwclockutc}")
 			archchroot settimeutc
@@ -1112,8 +1101,6 @@ archsettime(){
 #		archchroot settimelocal
 #	fi
 
-	pressanykey
-
 }
 archsettimeutcchroot(){
 	echo "hwclock --systohc --utc"
@@ -1129,7 +1116,6 @@ archsettimelocalchroot(){
 archsetrootpassword(){
 	clear
 	archchroot setrootpassword
-	pressanykey
 }
 archsetrootpasswordchroot(){
 	echo "passwd root"
@@ -1153,58 +1139,41 @@ archgenfstabmenu(){
 	if [ "$?" = "0" ]; then
 		case ${sel} in
 			"UUID")
-				clear
-				echo "genfstab -U -p /mnt > /mnt/etc/fstab"
 				genfstab -U -p /mnt > /mnt/etc/fstab
 			;;
 			"LABEL")
-				clear
-				echo "genfstab -L -p /mnt > /mnt/etc/fstab"
 				genfstab -L -p /mnt > /mnt/etc/fstab
 			;;
 			"PARTUUID")
-				clear
-				echo "genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab"
 				genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab
 			;;
 			"PARTLABEL")
-				clear
-				echo "genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab"
 				genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab
 			;;
 		esac
 	fi
-	pressanykey
 }
 
 archgencrypttab(){
-	clear
 	echo "echo -e \"${crypttab}\" >> /mnt/etc/crypttab"
 	echo -e "${crypttab}" >> /mnt/etc/crypttab
-	pressanykey
 }
 
 archgenmkinitcpioluks(){
-	clear
 	echo "sed -i \"s/block filesystems/block encrypt filesystems/g\" /mnt/etc/mkinitcpio.conf"
 	sed -i "s/block filesystems/block encrypt filesystems/g" /mnt/etc/mkinitcpio.conf
 	archchroot genmkinitcpio
-	pressanykey
 }
 archgenmkinitcpionvme(){
-	clear
 	echo "sed -i \"s/MODULES=()/MODULES=(nvme)/g\" /mnt/etc/mkinitcpio.conf"
 	sed -i "s/MODULES=()/MODULES=(nvme)/g" /mnt/etc/mkinitcpio.conf
 	archchroot genmkinitcpio
-	pressanykey
 }
 
 archeditmkinitcpio(){
 	${EDITOR} /mnt/etc/mkinitcpio.conf
 	if (whiptail --backtitle "${apptitle}" --title "${txtedit//%1/mkinitcpio.conf}" --yesno "${txtgenerate//%1/mkinitcpio} ?" 0 0) then
-		clear
 		archchroot genmkinitcpio
-		pressanykey
 	fi
 }
 archgenmkinitcpiochroot(){
@@ -1279,7 +1248,6 @@ archgrubinstall(){
 	clear
 	echo "pacstrap /mnt grub"
 	pacstrap /mnt grub
-	pressanykey
 
 	if [ "${eficomputer}" == "1" ]; then
 		if [ "${efimode}" == "1" ]||[ "${efimode}" == "2" ]; then
@@ -1287,14 +1255,12 @@ archgrubinstall(){
 				clear
 				echo "pacstrap /mnt efibootmgr"
 				pacstrap /mnt efibootmgr
-				pressanykey
 			fi
 		else
 			if (whiptail --backtitle "${apptitle}" --title "${txtinstall//%1/efibootmgr}" --yesno "${txtefibootmgr}" --defaultno 0 0) then
 				clear
 				echo "pacstrap /mnt efibootmgr"
 				pacstrap /mnt efibootmgr
-				pressanykey
 			fi
 		fi
 	fi
@@ -1304,7 +1270,6 @@ archgrubinstall(){
 			clear
 			echo "sed -i /GRUB_CMDLINE_LINUX=/c\GRUB_CMDLINE_LINUX=\\\"cryptdevice=/dev/disk/by-uuid/${luksrootuuid}:root\\\" /mnt/etc/default/grub"
 			sed -i /GRUB_CMDLINE_LINUX=/c\GRUB_CMDLINE_LINUX=\"cryptdevice=/dev/disk/by-uuid/${luksrootuuid}:root\" /mnt/etc/default/grub
-			pressanykey
 		fi
 	fi
 
@@ -1348,12 +1313,10 @@ archgrubinstallbootloader(){
 					"EFI") archchroot grubbootloaderefiinstall ${device};;
 					"BIOS+EFI") archchroot grubbootloaderefiusbinstall ${device};;
 				esac
-				pressanykey
 			fi
 		else
 			clear
 			archchroot grubbootloaderinstall ${device}
-			pressanykey
 		fi
 	fi
 }
@@ -1845,9 +1808,6 @@ if [ "${chroot}" = "1" ]; then
 		'syslinuxbootloaderefiinstall') archsyslinuxinstallbootloaderefichroot ${args};;
 		'systemdbootloaderinstall') archsystemdinstallchroot ${args};;
 		'refindbootloaderinstall') archrefindinstallchroot ${args};;
-		'archdiinstallandlaunch') archdiinstallandlaunchchroot;;
-		'archdiinstall') archdiinstallchroot;;
-		'archdilaunch') archdilaunchchroot;;
 	esac
 else
 	pacman -S --needed arch-install-scripts wget libnewt
